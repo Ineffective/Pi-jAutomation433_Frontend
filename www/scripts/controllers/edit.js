@@ -6,7 +6,7 @@ angular.module('pi4jfrontend')
 
 
         $scope.init = function () {
-            $scope.plugs = localStorageService.getAllPlugs();
+            $scope.plugs = localStorageService.getList("plugs");
         }
 
         //trigger at the end

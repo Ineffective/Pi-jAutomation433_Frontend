@@ -11,7 +11,7 @@
     <div class="list">
         <label class="item item-input item-stacked-label">
             <span class="input-label">Group name:</span>
-            <input type="text" placeholder="Living room lights">
+            <input type="text" placeholder="Living room lights" ng-model="newGroup.label" ng-required="true">
         </label>
     </div>
 
@@ -20,7 +20,7 @@
 
         <li class="item item-checkbox" ng-repeat="plug in plugs">
             <label class="checkbox">
-                <input type="checkbox" ng-model="newGroup.plugs[plug.label]">
+                <input type="checkbox"  ng-model="sel" ng-change="plugSelectChange(plug)">
             </label>
             {{plug.label}}
         </li>
@@ -32,11 +32,14 @@
 
         <li class="item item-checkbox" ng-repeat="user in users">
             <label class="checkbox">
-                <input type="checkbox">
+                <input type="checkbox"  ng-model="sel" ng-change="userSelectChange(user)">
             </label>
             {{user.username}}
         </li>
 
     </ul>
 
+    <button class="button button-block button-positive"  ng-click="submitGroup(newGroup)" ng-disabled="!newGroup.label || !objectHasProperty(newGroup.users) || !objectHasProperty(newGroup.plugs)">
+        Add to home!
+    </button>
 </ion-content>

@@ -10,7 +10,7 @@
 
     <ion-refresher
             pulling-text="Pull to refresh..."
-            on-refresh="userRefresh()">
+            on-refresh="userListPullRefresh()">
     </ion-refresher>
 
     <div class="card">
@@ -19,14 +19,13 @@
 
         <div class="item item-icon-right" ng-repeat="user in users"
              ng-class="{
-             'balanced-bg': calcBooleanUserState(user),
-             'assertive-bg': !calcBooleanUserState(user)
-             }"
-             ng-show="userStates">
+             'balanced-bg': user.state == 'online' || user.state == 'ONLINE',
+             'assertive-bg': user.state == 'offline' || user.state == 'OFFLINE'
+             }">
 
 
             <h2>{{user.username}}</h2>
-            <span>({{userStates[user.username]}})</span>
+            <span>({{user.state}})</span>
             <a href="#/users/{{user.username}}" class="dark"><i class="icon ion-wrench"></i></a>
 
         </div>

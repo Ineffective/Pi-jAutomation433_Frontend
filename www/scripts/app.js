@@ -24,6 +24,11 @@ angular.module('pi4jfrontend', ['ionic', 'ngRoute', 'ngAnimate', 'ngResource'])
                 templateUrl: 'views/addGroup.html',
                 controller: 'GroupCtrl'
             })
+            .when('/groups/:id',{
+                templateUrl: 'views/editGroup.html',
+                controller: 'GroupCtrl'
+            })
+
             /* +++ plugs +++ */
             .when('/plugs',{
                 templateUrl: 'views/plugs.html',

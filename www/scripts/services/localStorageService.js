@@ -1,99 +1,82 @@
 'use strict';
 
+/**
+ * A module that manages different lists of items in our local storage. we can use these lists e.g. for users, groups, plugs ..... But any item in the list must have an attribute "id"
+ */
 angular.module('pi4jfrontend')
     .factory('localStorageService', function () {
 
         /*initiating*/
-        var plugs = JSON.parse(localStorage.getItem("plugs"));
-        if (plugs == null) {
-            plugs = [];
+
+        var data = {};
+
+
+        data.plugs = JSON.parse(localStorage.getItem("plugs"));
+        if (data.plugs == null) {
+            data.plugs = [];
         }
 
-        var users = JSON.parse(localStorage.getItem("users"));
-        if (users == null) {
-            users = [];
+
+        data.users = JSON.parse(localStorage.getItem("users"));
+        if (data.users == null) {
+            data.users = [];
+        }
+
+        data.groups = JSON.parse(localStorage.getItem("groups"));
+        if (data.groups == null) {
+            data.groups = [];
         }
 
 
-        /* USERS */
-        var setUsers = function (serverList) {
-            if (users) {
-                users.splice(0, users.length);
+        var moo = "fasf";
+        var doo = function () {
+            return moo;
+        };
+        var loo = function () {
+            return groups;
+        };
+
+        /*generic version*/
+        var setList = function (listKey, listData) {
+            //set a common ground (empty array object)
+            if (data[listKey]) {
+                data[listKey].splice(0, data[listKey].length)
             } else {
-                users = [];
+                data[listKey] = [];
             }
-            for (var i = 0; i < serverList.length; i++) {
-                users.push(serverList[i]);
+
+            //start filling list
+            var list = data[listKey];
+
+            for (var i = 0; i < listData.length; i++) {
+                list.push(listData[i]);
             }
-            updateLocalStorageItem("users", users);
+
+            //and push to localStorage
+            updateLocalStorageItem(listKey, list);
+
         }
 
-        var removeUserFromLocalStorage = function (user) {
-            var index = getItemIndexInArrayByItemId(user, users);
+        var removeItemFromList = function (listKey, item) {
+            var index = getItemIndexInArrayByItemId(item, data[listKey]);
             if (index >= 0) {
-                users.splice(index, 1);
-                updateLocalStorageItem("users", users);
+                data[listKey].splice(index, 1);
+                updateLocalStorageItem("listKey", data[listKey]);
             }
         }
 
-        var updateSpecificUserInLocalStorage = function (user) {
-            var index = getItemIndexInArrayByItemId(user, users);
+        var updateItemInList = function (listKey, item) {
+            var index = getItemIndexInArrayByItemId(item, data[listKey]);
             if (index >= 0) {
-                users[index] = user;
-            }else{
-                users.push(user);
-            }
-            updateLocalStorageItem("users", users);
-        }
-
-        var getUsers = function () {
-            return users;
-        }
-
-
-        /* PLUGS */
-        var setPlugs = function (serverList) {
-            if (plugs) {
-                plugs.splice(0, plugs.length);
+                data[listKey][index] = item;
             } else {
-                plugs = [];
-            }
-
-            for (var i = 0; i < serverList.length; i++) {
-                plugs.push(serverList[i]);
-            }
-
-            updateLocalStorageItem("plugs", plugs);
-
-
-        }
-
-        var removePlugFromLocalStorage = function (plug) {
-            var index = getItemIndexInArrayByItemId(plug, plugs);
-            if (index >= 0) {
-                plugs.splice(index, 1);
-                updateLocalStorageItem("plugs", plugs);
+                data[listKey].push(item);
             }
         }
 
-        var updateSpecificPlugInLocalStorage = function (plug) {
-            var index = getItemIndexInArrayByItemId(plug, plugs);
-            if (index >= 0) {
-                plugs[index] = plug;
-            } else {
-                plugs.push(plug);
-            }
-            updateLocalStorageItem("plugs", plugs);
-
+        var getList = function (listKey) {
+            return data[listKey];
         }
-
-
-        var getPlugs = function () {
-            return plugs;
-        }
-
-
-
 
 
         /* utility functions */
@@ -115,17 +98,14 @@ angular.module('pi4jfrontend')
         }
 
 
-        // Public API here
+// Public API here
         return {
-            setPlugs: setPlugs,
-            getPlugs: getPlugs,
-            removePlugFromLocalStorage: removePlugFromLocalStorage,
-            updateSpecificPlugInLocalStorage: updateSpecificPlugInLocalStorage,
-            setUsers: setUsers,
-            getUsers: getUsers,
-            removeUserFromLocalStorage: removeUserFromLocalStorage,
-            updateSpecificUserInLocalStorage: updateSpecificUserInLocalStorage
-
+            setList: setList,
+            removeItemFromList: removeItemFromList,
+            updateItemInList: updateItemInList,
+            getList: getList,
+            doo: doo
         }
 
-    });
+    })
+;

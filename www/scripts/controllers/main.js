@@ -5,8 +5,8 @@ angular.module('pi4jfrontend')
 
 
         $scope.init = function () {
-            backendService.getAllUserStates(function(result){
-                $scope.userStates = result;
+            backendService.getAllUsers(function(result){
+                $scope.users = result;
             })
         }
 

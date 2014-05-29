@@ -14,6 +14,10 @@ angular.module('pi4jfrontend')
             backendService.setUsername(username);
         }
 
+        $scope.clearLocalStorageData = function(){
+            localStorage.clear();
+        }
+
 
 
         $scope.init = function () {
@@ -21,8 +25,8 @@ angular.module('pi4jfrontend')
             $scope.username = backendService.getUsername();
 
             //get users from local storage then get users from backend (backendService will update localStorage
-            $scope.users = localStorageService.getUsers();
-            backendService.getAllUsers();
+            $scope.users = localStorageService.getList("users");
+            backendService.getAllUsers(function(data){});
 
         }
 

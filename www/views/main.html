@@ -37,10 +37,10 @@
 
     <ul class="list">
         <li class="item item-divider">Users:</li>
-        <li ng-repeat="(user, state) in userStates" class="item item-icon-right">
-            {{user}} ({{state}})
-            <i class="icon ion-home balanced" ng-if="state == 'online'"></i>
-            <i class="icon ion-home assertive" ng-if="state == 'offline'"></i>
+        <li ng-repeat="user in users" class="item item-icon-right">
+            {{user.username}} ({{user.state}})
+            <i class="icon ion-home balanced" ng-if="user.state == 'online' || user.state == 'ONLINE'"></i>
+            <i class="icon ion-home assertive" ng-if="user.state == 'offline' || user.state == 'OFFLINE'"></i>
         </li>
     </ul>
 

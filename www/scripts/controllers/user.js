@@ -17,6 +17,12 @@ angular.module('pi4jfrontend')
             });
         }
 
+        $scope.updateUser = function(user){
+            backendService.updateUser(user, function(response){
+                $location.path("/users");
+            })
+        }
+
         $scope.deleteUser = function (user) {
             backendService.deleteUser(user, function (result) {
                 if (result) {
@@ -53,6 +59,9 @@ angular.module('pi4jfrontend')
             }
         }
 
+        /**
+         * removes all user nodes from available list so only devices that arent yet bound are displayed as bindable
+         */
         $scope.removeUserNodeFromLocalNetworkNodesReturned = function () {
             var users = $scope.users;
             var nodes = $scope.localNetworkNodes;
@@ -66,10 +75,22 @@ angular.module('pi4jfrontend')
         }
 
 
-        $scope.userRefresh = function () {
-            backendService.getAllUsers().then(function () {
-                $scope.$broadcast('scroll.refreshComplete');
+        $scope.userListPullRefresh = function () {
+            userRefresh();
+        }
+
+        var userRefresh = function () {
+            //get users from local storage then get users from backend (backendService will update localStorage)
+            $scope.users = localStorageService.getList("users");
+            backendService.getAllUsers(function (data) {//not used since we use the object from localStorage
+                hideRefresh();
             });
+
+        }
+
+        var hideRefresh = function(){
+            $scope.$broadcast('scroll.refreshComplete');
+
         }
 
 
@@ -85,19 +106,14 @@ angular.module('pi4jfrontend')
                 $scope.removeUserNodeFromLocalNetworkNodesReturned();
             });
 
-            //get users from local storage then get users from backend (backendService will update localStorage
-            $scope.users = localStorageService.getUsers();
-            backendService.getAllUsers();
+            userRefresh();
 
             if ($routeParams.username) {
                 $scope.editUser = angular.copy($scope.getUserById($routeParams.username));
             }
-
-            backendService.getAllUserStates(function (result) {
-                $scope.userStates = result;
-            })
         }
 
-        //trigger at the end
+//trigger at the end
         $scope.init();
-    });
+    })
+;

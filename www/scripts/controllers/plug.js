@@ -6,7 +6,7 @@ angular.module('pi4jfrontend')
 
 
         $scope.init = function () {
-            $scope.plugs = localStorageService.getPlugs();
+            $scope.plugs = localStorageService.getList("plugs");
             if($routeParams.id){
                 $scope.editPlug = angular.copy($scope.getPlugById($routeParams.id));
             }
