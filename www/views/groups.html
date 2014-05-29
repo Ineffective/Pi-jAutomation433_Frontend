@@ -18,8 +18,9 @@
 
         <div ng-if="groups.length == 0" class="item"><h3>No groups yet. Add some! </h3></div>
 
-        <a href="#/groups/{{group.id}}">
-            <div class="item" ng-repeat="group in groups">
+
+        <div class="item" ng-repeat="group in groups">
+            <a href="#/groups/{{group.id}}">
                 <!--<a href="#/groups/{{group.id}}" class="energized"><i class="icon ion-wrench"></i></a>-->
                 <div class="row">
                     <button ng-click="setPlugState(plug, true)" class="col-20 button button-outline pull-left">
@@ -30,8 +31,9 @@
                         <i class="icon ion-power assertive"></i>
                     </button>
                 </div>
-            </div>
-        </a>
+            </a>
+        </div>
+
 
     </div>
 

@@ -56,7 +56,7 @@ angular.module('pi4jfrontend')
             var promise = $http(
                 {
                     method: 'PUT',
-                    url: "http://" + ip + ":" + port + baseURI + 'switches/activate' + plug.id,
+                    url: "http://" + ip + ":" + port + baseURI + 'switches/activate/' + plug.id,
                     data: plug,
                     headers: {'Content-Type': 'application/json'}
                 }
@@ -149,7 +149,7 @@ angular.module('pi4jfrontend')
         }
 
         var deleteGroup = function(group, callback){
-            $http.delete("http://" + ip + ":" + port + baseURI + "groups").success(function (data) {
+            $http.delete("http://" + ip + ":" + port + baseURI + "groups/" + group.id).success(function (data) {
                 localStorageService.removeItemFromList("groups", group);
                 callback(data);
             });

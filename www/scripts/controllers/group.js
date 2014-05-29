@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('pi4jfrontend')
-    .controller('GroupCtrl', function ($scope, $location, backendService, localStorageService) {
+    .controller('GroupCtrl', function ($scope, $location,$routeParams, backendService, localStorageService) {
 
         $scope.newGroup = {
             plugs: {},
@@ -40,6 +40,20 @@ angular.module('pi4jfrontend')
             groupRefresh();
         }
 
+        $scope.getGroupById = function(id){
+            for (var i = 0; i < $scope.groups.length; i++) {
+                if ($scope.groups[i].id == id) {
+                    return $scope.groups[i];
+                }
+            }
+        }
+
+        $scope.deleteGroup = function(group){
+            backendService.deleteGroup(group, function(result){
+                    $location.path('/groups');   //if successful, return to previous page
+            })
+        }
+
         var groupRefresh = function () {
             $scope.groups = localStorageService.getList("groups");
             backendService.getGroups(function (response) {
@@ -56,6 +70,10 @@ angular.module('pi4jfrontend')
             $scope.users = localStorageService.getList("users");
             $scope.plugs = localStorageService.getList("plugs");
             groupRefresh();
+
+            if ($routeParams.id) {
+                $scope.editGroup = angular.copy($scope.getGroupById($routeParams.id));
+            }
         }
         //trigger at the end
         $scope.init();

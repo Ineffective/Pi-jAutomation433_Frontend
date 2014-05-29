@@ -18,8 +18,8 @@
 
         <div class="item item-thumbnail-left item-icon-right" ng-repeat="plug in plugs">
 
-            <img src="/images/litUp_200.png" alt="" ng-if="plug.lastKnownState"/>
-            <img src="/images/notLitUp_200.png" alt="" ng-if="!plug.lastKnownState"/>
+            <img src="images/litUp_200.png" alt="" ng-if="plug.lastKnownState"/>
+            <img src="images/notLitUp_200.png" alt="" ng-if="!plug.lastKnownState"/>
 
             <h3>{{plug.label}}</h3>
             <a href="#/plugs/{{plug.id}}" class="energized"><i class="icon ion-wrench"></i></a>
