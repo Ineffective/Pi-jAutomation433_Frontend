@@ -1,7 +1,8 @@
 *.keystore
 *.sw*
 platforms/^.*
-
+.idea/
 dist/
 node_modules/
 www/components/
+*.iml
