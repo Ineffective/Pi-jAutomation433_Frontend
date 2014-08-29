@@ -77,9 +77,12 @@ angular.module('pi4jfrontend')
         }
 
         var submitPlug = function (plug) {
+            //TODO DEBUG
+            plug.deviceType = "ELRO";
+
             return $http({
                 method: 'POST',
-                url: "http://" + ip + ":" + port + baseURI + "switches",
+                url: "http://" + ip + ":" + port + baseURI + "device",
                 data: plug
             }).then(function (response) {
                     localStorageService.updateItemInList("plugs", response.data);
