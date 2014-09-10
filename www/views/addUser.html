@@ -6,34 +6,30 @@
 
 </ion-header-bar>
 
-<ion-content has-header="true" has-footer="true">
-
-    <div class="card">
+<ion-content has-header="true" has-footer="true" padding="true">
 
 
-        <label class="item item-input">
+    <div class="list">
+        <label class="item item-input item-stacked-label">
+            <span class="input-label">What should the new user be called?</span>
             <input ng-model="newUser.username" type="text" placeholder="username">
         </label>
-
         <label class="item item-input item-stacked-label">
-            <span class="input-label">Personal Device (<span>Own IP: {{deviceIp}}</span>)</span>
+            <span class="input-label">Personal Device</span>
             <select
                     ng-model="newUser.personalDevice"
                     ng-options="node as (node.dnsName + ' at ' + node.lastKnownIPAddress + '(' + node.macAddress + ')') for (mac, node) in localNetworkNodes"
                     style="width:100%"
                     ></select>
-            <span>User will be linked to device specified</span>
         </label>
-
 
         <button class="button button-block button-positive" ng-click="submitUser(newUser)">
             Submit User!
         </button>
     </div>
 
-
-
-
+    <span>User will be linked to device specified</span><br>
+    <span>(This devices IP is: {{deviceIp}})</span>
 
 
 </ion-content>

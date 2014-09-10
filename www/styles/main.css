@@ -2,3 +2,10 @@
 a{
     text-decoration: none;
 }
+
+
+/*ionic-fix since refresher is visible otherwise*/
+
+div.scroll-refresher{
+    top: -80px;
+}

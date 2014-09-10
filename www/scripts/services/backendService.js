@@ -8,7 +8,7 @@ angular.module('pi4jfrontend')
         var username = localStorage.getItem("username");
 
         var port = "8080";
-        var baseURI = "/service/";
+        var baseURI = "/iot-spring-bpm/service/";
 
 
         /* Local Network Services*/
