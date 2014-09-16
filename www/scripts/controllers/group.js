@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('pi4jfrontend')
-    .controller('GroupCtrl', function ($scope, $location,$routeParams, backendService, localStorageService) {
+    .controller('GroupCtrl', function ($scope, $location, $route, $routeParams, Groups, Users, Switches, localStorageService) {
 
         $scope.newGroup = {
             plugs: {},
@@ -9,7 +9,7 @@ angular.module('pi4jfrontend')
         }
 
         $scope.submitGroup = function (group) {
-            backendService.submitGroup(group, function (response) {
+            Groups.save(group, function (response) {
                 $location.path("/groups");
             });
         }
@@ -37,7 +37,9 @@ angular.module('pi4jfrontend')
         }
 
         $scope.groupListPullRefresh = function(){
-            groupRefresh();
+            $scope.groups = Groups.query({}, function(response){
+                $scope.$broadcast('scroll.refreshComplete');
+            });
         }
 
         $scope.getGroupById = function(id){
@@ -49,31 +51,23 @@ angular.module('pi4jfrontend')
         }
 
         $scope.deleteGroup = function(group){
-            backendService.deleteGroup(group, function(result){
-                    $location.path('/groups');   //if successful, return to previous page
-            })
-        }
-
-        var groupRefresh = function () {
-            $scope.groups = localStorageService.getList("groups");
-            backendService.getGroups(function (response) {
-                hideRefresh();
+            Groups.delete(group, function(response){
+                $location.path('/groups');   //if successful, return to previous page
             });
-
         }
 
-        var hideRefresh = function(){
-            $scope.$broadcast('scroll.refreshComplete');
-        }
 
         $scope.init = function () {
-            $scope.users = localStorageService.getList("users");
-            $scope.plugs = localStorageService.getList("plugs");
-            groupRefresh();
-
-            if ($routeParams.id) {
-                $scope.editGroup = angular.copy($scope.getGroupById($routeParams.id));
+            if ($routeParams.id || $location.path() == '/groups/add') {
+                $scope.users = Users.query();
+                $scope.plugs = Switches.query();
+                if($routeParams.id){
+                    $scope.editGroup = Groups.get({id: $routeParams.id});
+                }
+            }else{
+                $scope.groups = Groups.query();
             }
+
         }
         //trigger at the end
         $scope.init();

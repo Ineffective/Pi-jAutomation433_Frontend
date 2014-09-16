@@ -28,14 +28,6 @@ angular.module('pi4jfrontend')
         }
 
 
-        var moo = "fasf";
-        var doo = function () {
-            return moo;
-        };
-        var loo = function () {
-            return groups;
-        };
-
         /*generic version*/
         var setList = function (listKey, listData) {
             //set a common ground (empty array object)
@@ -103,8 +95,7 @@ angular.module('pi4jfrontend')
             setList: setList,
             removeItemFromList: removeItemFromList,
             updateItemInList: updateItemInList,
-            getList: getList,
-            doo: doo
+            getList: getList
         }
 
     })

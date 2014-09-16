@@ -1,14 +1,16 @@
 'use strict';
 
 angular.module('pi4jfrontend')
-    .controller('PlugCtrl', function ($scope, $location,$routeParams, backendService, localStorageService) {
+    .controller('PlugCtrl', function ($scope, $location,$routeParams, Switches, localStorageService) {
 
 
 
         $scope.init = function () {
-            $scope.plugs = localStorageService.getList("plugs");
             if($routeParams.id){
-                $scope.editPlug = angular.copy($scope.getPlugById($routeParams.id));
+                $scope.editPlug = Switches.query({id: $routeParams.id});
+            }
+            else{
+                $scope.plugs = Switches.query();
             }
         }
 
@@ -21,40 +23,36 @@ angular.module('pi4jfrontend')
         }
 
         $scope.plugRefresh = function(){
-            backendService.getAllPlugs().then(function(result){
+            $scope.plugs = Switches.query({}, function(result){
                 $scope.$broadcast('scroll.refreshComplete');
-            })
+            });
 
         }
 
         $scope.submitPlug = function(plug){
-            backendService.submitPlug(plug).then(function(response){
+            Switches.save(plug, function(response){
                 $location.path("/plugs");
             });
         }
 
         $scope.deletePlug = function(plug){
-            backendService.deletePlug(plug).then(function(response){
+            Switches.delete(plug, function(response){
                 $location.path("/plugs");
             });
         }
 
 
         $scope.setPlugState = function(plug, state){
-            var promise;
-            if(state){
-                promise = backendService.plugOn(plug);
-            }
-            if(!state){
-                promise = backendService.plugOff(plug);
-            }
-            promise.success(function(result){
-                $scope.updateLocalPlugStateById(result.id, result.lastKnownState)
+            var submitPlug = angular.copy(plug);
+            submitPlug.lastKnownState = state;
 
-            })
+            Switches.save(submitPlug, function(response){
+                updateLocalPlugStateById(response.id, response.lastKnownState);
+            });
+
         }
 
-        $scope.updateLocalPlugStateById = function(plugId, state){
+        var updateLocalPlugStateById = function(plugId, state){
             for(var i = 0; i<$scope.plugs.length;i++){
                 if ($scope.plugs[i].id == plugId){
                     $scope.plugs[i].lastKnownState = state

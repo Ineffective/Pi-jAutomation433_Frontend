@@ -1,37 +1,21 @@
 'use strict';
 
 angular.module('pi4jfrontend')
-    .controller('UserCtrl', function ($scope, $routeParams, $location, localStorageService, backendService) {
+    .controller('UserCtrl', function ($scope, $q, $routeParams, $location, localStorageService, Users, NetworkDevices) {
 
-
-        $scope.username = "";
-
-        /* TODO must be moved */
-        $scope.setNewUsername = function (username) {
-            backendService.setUsername(username);
-        }
-
-        $scope.submitUser = function (user) {
-            backendService.submitUser(user, function (response) {
+        $scope.save = function (user) {
+            Users.save(user, function (response) {
                 $location.path("/users");
             });
         }
 
-        $scope.updateUser = function(user){
-            backendService.updateUser(user, function(response){
-                $location.path("/users");
-            })
-        }
-
         $scope.deleteUser = function (user) {
-            backendService.deleteUser(user, function (result) {
-                if (result) {
-                    var index = $scope.users.indexOf(user);
-                    $scope.users.splice(index, 1);
-                    $location.path('/users');
-                }
-            })
-        }
+            Users.delete(user, function (response) {
+                $location.path('/users');
+                var index = $scope.users.indexOf(user);
+                $scope.users.splice(index, 1);
+            });
+        };
 
 
         $scope.getUserById = function (username) {
@@ -43,11 +27,6 @@ angular.module('pi4jfrontend')
         }
 
         $scope.calcBooleanUserState = function (user) {
-            /*var lastSeen = new Date(user.personalDevice.lastSeen);
-             var justNow = new Date();
-             justNow.setMinutes(justNow.getMinutes() - 2);
-
-             return justNow.getTime() <= lastSeen.getTime();*/
             if (!$scope.userStates) {
                 return false;
             }
@@ -72,48 +51,45 @@ angular.module('pi4jfrontend')
                 }
 
             }
-        }
-
+        };
 
         $scope.userListPullRefresh = function () {
-            userRefresh();
+            Users.query({}, function (response) {
+                    $scope.$broadcast('scroll.refreshComplete');
+                }
+            )
+        };
+
+        $scope.queryUsers = function(){
+            $scope.users = Users.query();
         }
 
-        var userRefresh = function () {
-            //get users from local storage then get users from backend (backendService will update localStorage)
-            $scope.users = localStorageService.getList("users");
-            backendService.getAllUsers(function (data) {//not used since we use the object from localStorage
-                hideRefresh();
+        $scope.receiveOwnIP = function(){
+            NetworkDevices.getOwnIp({}, function(response){
+                $scope.deviceIp = response.ip;
             });
-
         }
 
-        var hideRefresh = function(){
-            $scope.$broadcast('scroll.refreshComplete');
-
+        $scope.queryLocalNetworkNodes = function(){
+            $scope.localNetworkNodes = NetworkDevices.getAll();
         }
-
 
         $scope.init = function () {
-            $scope.username = backendService.getUsername();
-
-            backendService.getOwnIpAddress(function (result) {
-                $scope.deviceIp = JSON.parse(result);
-            });
-
-            backendService.getLocalNetworkNodes(function (result) {
-                $scope.localNetworkNodes = result;
-                $scope.removeUserNodeFromLocalNetworkNodesReturned();
-            });
-
-            userRefresh();
 
             if ($routeParams.username) {
-                $scope.editUser = angular.copy($scope.getUserById($routeParams.username));
+                $scope.editUser = Users.get({username: $routeParams.username})
             }
-        }
+            else{
+                $scope.username = localStorage.getItem("username");
+                $q.all([$scope.queryUsers(), $scope.receiveOwnIP(), $scope.queryLocalNetworkNodes()
+                    ]).then(function (response) {
+                        $scope.removeUserNodeFromLocalNetworkNodesReturned();
+                    });
+            }
+        };
 
-//trigger at the end
+
+        //trigger at the end
         $scope.init();
-    })
-;
+    }
+);

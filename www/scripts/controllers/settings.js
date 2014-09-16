@@ -1,17 +1,17 @@
 'use strict';
 
 angular.module('pi4jfrontend')
-    .controller('SettingsCtrl', function ($scope, backendService, localStorageService) {
+    .controller('SettingsCtrl', function ($scope, localStorageService) {
 
         $scope.ip = "";
         $scope.username = "";
 
         $scope.setNewIP = function (ip) {
-            backendService.setIP(ip);
+            localStorage.setItem("backendIP", ip);
         }
 
         $scope.setNewUsername = function (username) {
-            backendService.setUsername(username);
+            localStorage.setItem("username", username);
         }
 
         $scope.clearLocalStorageData = function(){
@@ -21,12 +21,11 @@ angular.module('pi4jfrontend')
 
 
         $scope.init = function () {
-            $scope.ip = backendService.getIP();
-            $scope.username = backendService.getUsername();
+            $scope.ip = localStorage.getItem("backendIP");
+            $scope.username = localStorage.getItem("username");
 
             //get users from local storage then get users from backend (backendService will update localStorage
             $scope.users = localStorageService.getList("users");
-            backendService.getAllUsers(function(data){});
 
         }
 

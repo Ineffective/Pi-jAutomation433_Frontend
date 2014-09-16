@@ -1,13 +1,11 @@
 'use strict';
 
 angular.module('pi4jfrontend')
-    .controller('MainCtrl', function ($scope, backendService, localStorageService) {
+    .controller('MainCtrl', function ($scope, Users, localStorageService) {
 
 
         $scope.init = function () {
-            backendService.getAllUsers(function(result){
-                $scope.users = result;
-            })
+            $scope.users = Users.query();
         }
 
         //trigger at the end

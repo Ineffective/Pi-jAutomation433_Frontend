@@ -3,6 +3,22 @@
 angular.module('pi4jfrontend')
     .factory('backendService', function ($http, $resource, localStorageService) {
 
+
+        /*planet.factory('Mitarbeiter', ['$resource', function ($resource) {
+            return $resource('api/mitarbeiter/:mitaId/:bereich/:aktion', {mitaId: '@mitaId', bereich: '@bereich', aktion: '@aktion'}, {
+                teilzeittageVerschieben: {method: 'POST', isArray: false, params: {bereich: 'teilzeittage', aktion: 'verschieben'}},
+                teilzeittageVerkaufen: {method: 'POST', isArray: false, params: {bereich: 'teilzeittage', aktion: 'verkaufen'}},
+                teilzeittageLoeschen: {method: 'POST', isArray: false, params: {bereich: 'teilzeittage', aktion: 'loeschen'}},
+                teilzeittageHinzufuegen: {method: 'POST', isArray: false, params: {bereich: 'teilzeittage', aktion: 'hinzufuegen'}},
+                teilzeitanspruchVerschieben: {method: 'POST', isArray: false, params: {bereich: 'teilzeitansprueche', aktion: 'verschieben'}},
+                teilzeitanspruchVerkaufen: {method: 'POST', isArray: false, params: {bereich: 'teilzeitansprueche', aktion: 'verkaufen'}},
+                teilzeitanspruchLoeschen: {method: 'POST', isArray: false, params: {bereich: 'teilzeitansprueche', aktion: 'loeschen'}},
+                kommentarLaden: {method: 'GET', isArray: false, params: {bereich: 'kommentar'}},
+                kommentarSpeichern: {method: 'POST', isArray: false, params: {bereich: 'kommentar'}}
+            });
+        }]);*/
+
+
         //connection data for backend
         var ip = localStorage.getItem("backendIP");
         var username = localStorage.getItem("username");

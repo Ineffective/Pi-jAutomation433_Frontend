@@ -7,10 +7,6 @@ angular.module('pi4jfrontend', ['ionic', 'ngRoute', 'ngAnimate', 'ngResource'])
                 templateUrl: 'views/main.html',
                 controller: 'MainCtrl'
             })
-            .when('/edit', {
-                templateUrl: 'views/edit.html',
-                controller: 'EditCtrl'
-            })
             .when('/settings', {
                 templateUrl: 'views/settings.html',
                 controller: 'SettingsCtrl'
