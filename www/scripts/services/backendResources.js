@@ -12,7 +12,7 @@ angular.module('pi4jfrontend')
             getAll: {method: 'GET', isArray: false}});
     })
     .factory('Switches', function($resource, localStorageService){
-        return $resource(baseURL + '/switches/:id', null,{
+        return $resource(baseURL + '/switches/:id', {id: '@id'},{
             query: {
                 method: 'GET',
                 isArray: true,
@@ -26,9 +26,9 @@ angular.module('pi4jfrontend')
     })
 
     .factory('Users', function($resource){
-        return $resource(baseURL + '/users/:username', null);
+        return $resource(baseURL + '/users/:id', {id: '@id'});
     })
 
     .factory('Groups', function($resource){
-        return $resource(baseURL + '/groups/:id', null);
+        return $resource(baseURL + '/groups/:id', {id: '@id'});
     });

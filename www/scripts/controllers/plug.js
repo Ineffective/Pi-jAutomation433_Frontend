@@ -7,7 +7,7 @@ angular.module('pi4jfrontend')
 
         $scope.init = function () {
             if($routeParams.id){
-                $scope.editPlug = Switches.query({id: $routeParams.id});
+                $scope.editPlug = Switches.get({id: $routeParams.id});
             }
             else{
                 $scope.plugs = Switches.query();
@@ -36,9 +36,11 @@ angular.module('pi4jfrontend')
         }
 
         $scope.deletePlug = function(plug){
-            Switches.delete(plug, function(response){
-                $location.path("/plugs");
-            });
+            plug.$delete()
+                .then(function(){
+                    $location.path("/plugs");
+                })
+
         }
 
 

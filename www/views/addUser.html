@@ -16,9 +16,7 @@
         </label>
         <label class="item item-input item-stacked-label">
             <span class="input-label">Personal Device</span>
-            <select
-                    ng-model="newUser.personalDevice"
-                    ng-options="node as (node.dnsName + ' at ' + node.lastKnownIPAddress + '(' + node.macAddress + ')') for (mac, node) in localNetworkNodes"
+            <select ng-model="newUser.personalDevice" ng-options="node as (node.dnsName + ' at ' + node.lastKnownIPAddress + '(' + node.macAddress + ')') for (mac, node) in localNetworkNodes | orderBy : lastKnownIPAddress"
                     style="width:100%"
                     ></select>
         </label>

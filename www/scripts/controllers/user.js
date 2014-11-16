@@ -10,11 +10,11 @@ angular.module('pi4jfrontend')
         }
 
         $scope.deleteUser = function (user) {
-            Users.delete(user, function (response) {
-                $location.path('/users');
-                var index = $scope.users.indexOf(user);
-                $scope.users.splice(index, 1);
-            });
+            user.$delete()
+                .then(function(){
+                    $location.path('/users');
+                });
+
         };
 
 
@@ -76,8 +76,8 @@ angular.module('pi4jfrontend')
 
         $scope.init = function () {
 
-            if ($routeParams.username) {
-                $scope.editUser = Users.get({username: $routeParams.username})
+            if ($routeParams.id) {
+                $scope.editUser = Users.get({id: $routeParams.id})
             }
             else{
                 $scope.username = localStorage.getItem("username");

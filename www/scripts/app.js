@@ -47,7 +47,7 @@ angular.module('pi4jfrontend', ['ionic', 'ngRoute', 'ngAnimate', 'ngResource'])
                 templateUrl: 'views/addUser.html',
                 controller: 'UserCtrl'
             })
-            .when('/users/:username',{
+            .when('/users/:id',{
                 templateUrl: 'views/editUser.html',
                 controller: 'UserCtrl'
             })

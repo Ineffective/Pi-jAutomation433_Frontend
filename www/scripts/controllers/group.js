@@ -51,9 +51,10 @@ angular.module('pi4jfrontend')
         }
 
         $scope.deleteGroup = function(group){
-            Groups.delete(group, function(response){
-                $location.path('/groups');   //if successful, return to previous page
-            });
+            group.$delete()
+                .then(function(response){
+                    $location.path('/groups');   //if successful, return to previous page
+                });
         }
 
 
